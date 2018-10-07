@@ -64,6 +64,7 @@ class Simulation(object):
         self.basic_repro_num = basic_repro_num
         self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
             virus_name, population_size, vacc_percentage, initial_infected)
+        self.virus = Virus(virus_name, mortality_rate, basic_repro_num)
 
         # TODO: Create a Logger object and bind it to self.logger.  You should use this
         # logger object to log all events of any importance during the simulation.  Don't forget
@@ -85,13 +86,19 @@ class Simulation(object):
         # an array filled with Person objects that matches the specifications of the
         # simulation (correct number of people in the population, correct percentage of
         # people vaccinated, correct number of initially infected people).
-        population = []
+        population = self.population
         infected_count = 0
-        while len(population) != pop_size:
-            if infected_count !=  initial_infected:
+        while len(population) < self.population_size:
+            if infected_count <  initial_infected:
                 # TODO: Create all the infected people first, and then worry about the rest.
                 # Don't forget to increment infected_count every time you create a
                 # new infected person!
+                sample = random.sample(range(self.population_size), initial_infected)
+                index = 0
+                for prsn in sample:
+                    Person(sample[index], False, self.virus)
+                    index += 1
+                    infected_count += 1
                 pass
             else:
                 # Now create all the rest of the people.
@@ -99,6 +106,7 @@ class Simulation(object):
                 # 0 and 1.  If this number is smaller than vacc_percentage, this person
                 # should be created as a vaccinated person. If not, the person should be
                 # created as an unvaccinated person.
+
                 pass
             # TODO: After any Person object is created, whether sick or healthy,
             # you will need to increment self.next_person_id by 1. Each Person object's
@@ -134,7 +142,7 @@ class Simulation(object):
         # round of this simulation.  At the end of each iteration of this loop, remember
         # to rebind should_continue to another call of self._simulation_should_continue()!
             pass
-        print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
+        print('The simulation has ended after {} turns.'.format(time_step_counter))
 
     def time_step(self):
         # TODO: Finish this method!  This method should contain all the basic logic

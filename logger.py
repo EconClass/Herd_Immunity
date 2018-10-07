@@ -56,47 +56,69 @@ class Logger(object):
         # as the first line of the file.  This line of metadata should be tab-delimited
         # (each item separated by a '\t' character).
 
+        new_line = open(self.file_name, "w")
+        inputs = "PARAMETERS \t Population: {} \t Vaccinated: {} \t Virus: {} \t Mortality Rate: {} \t Reproduction: {} \n".format(str(pop_size), str(vacc_percentage), virus_name, str(mortality_rate), str(basic_repro_num))
+        new_line.write(inputs)
+
         # NOTE: Since this is the first method called, it will create the text file
         # that we will store all logs in.  Be sure to use 'w' mode when you open the file.
         # For all other methods, we'll want to use the 'a' mode to append our new log to the end,
         # since 'w' overwrites the file.
-        # NOTE: Make sure to end every line with a '/n' character to ensure that each
+        # NOTE: Make sure to end every line with a '\n' character to ensure that each
         # event logged ends up on a separate line!
-        logging.basicConfig(filename = self.file_name)
-        logging.info(" {} \t {} \t {} \t {} \t {}" .format(pop_size, vacc_percentage, virus_name, mortality_rate, basic_repro_num))
         pass
 
     def log_interaction(self, person1, person2, did_infect=None, person2_vacc=None, person2_sick=None):
         # TODO: Finish this method.  The Simulation object should use this method to
-        # log every interaction a sick individual has during each time step.  This method
+        # *********log every interaction a sick individual has during each time step.  This method
         # should accomplish this by using the information from person1 (the infected person),
         # person2 (the person randomly chosen for the interaction), and the optional
         # keyword arguments passed into the method.  See documentation for more info
         # on the format of the logs that this method should write.
-        # NOTE:  You'll need to think
-        # about how the booleans passed (or not passed) represent
+        add_lines = open(self.file_name, "a")
+
+        if did_infect == True:
+            add_lines.write("Citizen {} has infected {}! \n ".format(person1._id, person2._id))
+        elif person2_vacc == True:
+            add_lines.write("Citizen {} has been immunized against the virus! \n".format(person2._id))
+        elif person2_sick == True:
+            add_lines.write("Citizen {} has already been infected! \n".format(person2._id))
+        else:
+            add_lines.write("Citizen {}is naturally immune to the virus! \n".format(person2._id))
+        # NOTE:  You'll need to think about
+        # how the booleans passed (or not passed) represent
         # all the possible edge cases!
-        # NOTE: Make sure to end every line with a '/n' character to ensure that each
+        # NOTE: Make sure to end every line with a '\n' character to ensure that each
         # event logged ends up on a separate line!
         pass
 
     def log_infection_survival(self, person, did_die_from_infection):
         # TODO: Finish this method.  The Simulation object should use this method to log
-        # the results of every call of a Person object's .resolve_infection() method.
+        # the results of every call of a Person object's .did_survive_infection() method.
         # If the person survives, did_die_from_infection should be False.  Otherwise,
         # did_die_from_infection should be True.  See the documentation for more details
         # on the format of the log.
-        # NOTE: Make sure to end every line with a '/n' character to ensure that each
+        add_lines = open(self.file_name, "a")
+        if person.is_alive == True:
+            did_die_from_infection = False
+            add_lines.write("Citizen {} has survived the infection! \n".format(person._id))
+        else:
+            did_die_from_infection = True
+            add_lines.write("R.I.P. Citizen {}! \n".format(person._id))
+        # NOTE: Make sure to end every line with a '\n' character to ensure that each
         # event logged ends up on a separate line!
         pass
 
     def log_time_step(self, time_step_number):
         # TODO: Finish this method.  This method should log when a time step ends, and a
         # new one begins.  See the documentation for more information on the format of the log.
+        add_lines = open(self.file_name, "a")
+        add_lines.write("End of time step: {} \n".frormat(time_step_number))
+        
         # NOTE: Stretch challenge opportunity! Modify this method so that at the end of each time
         # step, it also logs a summary of what happened in that time step, including the number of
         # people infected, the number of people dead, etc.  You may want to create a helper class
         # to compute these statistics for you, as a Logger's job is just to write logs!
-        # NOTE: Make sure to end every line with a '/n' character to ensure that each
+        # NOTE: Make sure to end every line with a '\n' character to ensure that each
         # event logged ends up on a separate line!
         pass
