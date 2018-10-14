@@ -47,7 +47,7 @@ class Person(object):
         # TODO:  Finish this method. Follow the instructions in the class documentation
         # for resolve_infection.  If person dies, set is_alive to False and return False.
         # If person lives, set is_vaccinated = True, infected = None, return True.
-        rand_mortality = random(0, 1)
+        rand_mortality = random.random()
         infection_mortality = self.infected.mortality_rate
         if rand_mortality < infection_mortality:
             self.is_alive = False
